@@ -1,5 +1,5 @@
 # Создаем шаблон заполнения словаря с пользователями
-user_dick_template = {
+user_dict_template = {
     'page': 1,
     'bookmarks': set()
 }
