@@ -66,7 +66,7 @@ async def process_continue_command(message: Message):
 # Этот хэндлер будет срабатывать на команду "/bookmarks"
 # и отправлять пользователю список сохраненных закладок,
 # если они есть или сообщение о том, что закладок нет
-@router.message(Command(commands='bookmark'))
+@router.message(Command(commands='bookmarks'))
 async def procces_bookmark_command(message: Message):
     if users_db[message.from_user.id]["bookmarks"]:
         await message.answer(
@@ -118,7 +118,7 @@ async def procces_forward_press(callback: CallbackQuery):
 # с номером текущей страницы и добавлять текущую страницу в закладки
 @router.callback_query(lambda x: '/' in x.data and x.data.replace('/', '').isdigit())
 async def process_page_press(callback: CallbackQuery):
-    users_db[callback.from_user.id]['bookmarkd'].add(
+    users_db[callback.from_user.id]['bookmarks'].add(
         users_db[callback.from_user.id]['page']
     )
     await callback.answer('Страница добавлена в закладки!')
@@ -163,7 +163,7 @@ async def process_cancel_press(callback: CallbackQuery):
 @router.callback_query(IsDelBookmarkCallbackData())
 async def process_del_bookmark_press(callback: CallbackQuery):
     users_db[callback.from_user.id]['bookmarks'].remove(
-        int(callback.data[:3])
+        int(callback.data[:-3])
     )
     if users_db[callback.from_user.id]['bookmarks']:
         await callback.message.edit_text(
